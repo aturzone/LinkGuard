@@ -3,6 +3,7 @@
  * Renders dashboard, settings, config, and history tabs.
  */
 
+import "../styles/popup.scss";
 import { ConfigService } from "../services/config.service";
 import { LinkGuardConfig, DEFAULT_CONFIG } from "../engine/models/config.model";
 

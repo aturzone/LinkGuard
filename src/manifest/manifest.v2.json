@@ -31,7 +31,6 @@
                 "content/tooltip.js",
                 "content/overlay.js"
             ],
-            "css": ["styles/overlay.css"],
             "run_at": "document_start"
         }
     ],
