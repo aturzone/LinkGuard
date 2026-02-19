@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkGuard Privacy Policy</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; color: #333; line-height: 1.7; }
+        h1 { color: #175ddc; }
+        h2 { color: #444; margin-top: 32px; }
+        .updated { color: #888; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <h1>LinkGuard Privacy Policy</h1>
+    <p class="updated">Last updated: February 19, 2026</p>
+
+    <h2>Overview</h2>
+    <p>LinkGuard is a browser extension that checks URL safety using offline heuristic analysis. We are committed to protecting your privacy. This policy explains what data LinkGuard handles and how.</p>
+
+    <h2>Data Collection</h2>
+    <p><strong>LinkGuard does NOT collect, transmit, or store any personal data on external servers.</strong></p>
+    <p>Specifically, LinkGuard:</p>
+    <ul>
+        <li>Does NOT send URLs or browsing data to any external server</li>
+        <li>Does NOT use analytics or tracking services</li>
+        <li>Does NOT require user accounts or registration</li>
+        <li>Does NOT make any network requests for URL analysis</li>
+        <li>Does NOT share data with third parties</li>
+    </ul>
+
+    <h2>Local Data Storage</h2>
+    <p>LinkGuard stores the following data locally in your browser using the browser's built-in storage API (chrome.storage.local):</p>
+    <ul>
+        <li><strong>Configuration settings:</strong> Your preferences including warning/block thresholds, intercept mode, notification level, allowlist, and blocklist domains.</li>
+        <li><strong>Scan history:</strong> A log of recently analyzed URLs with their safety scores (up to 1,000 entries). This data never leaves your browser.</li>
+    </ul>
+    <p>You can clear all stored data at any time through the extension's popup interface.</p>
+
+    <h2>How URL Analysis Works</h2>
+    <p>All URL analysis is performed entirely within your browser using local heuristic algorithms. The extension examines:</p>
+    <ul>
+        <li>Domain structure and reputation (against a bundled safe-domains list)</li>
+        <li>URL structure patterns (length, encoding, special characters)</li>
+        <li>Protocol safety (HTTPS vs HTTP)</li>
+        <li>Content patterns (phishing keywords, brand impersonation)</li>
+        <li>Behavioral patterns (redirects, entropy analysis)</li>
+    </ul>
+    <p>No part of this analysis involves external API calls or network requests.</p>
+
+    <h2>Permissions</h2>
+    <p>LinkGuard requests the following browser permissions:</p>
+    <ul>
+        <li><strong>activeTab:</strong> To analyze the URL of the currently active tab</li>
+        <li><strong>storage:</strong> To save your configuration and scan history locally</li>
+        <li><strong>webNavigation:</strong> To intercept navigation and check URLs before loading</li>
+        <li><strong>notifications:</strong> To alert you about dangerous links (configurable)</li>
+        <li><strong>host_permissions (&lt;all_urls&gt;):</strong> Required to analyze links on all websites you visit</li>
+    </ul>
+
+    <h2>Configuration Export/Import</h2>
+    <p>The config export feature creates a JSON file on your local device. The import feature reads a JSON file from your local device. No configuration data is transmitted over the network.</p>
+
+    <h2>Open Source</h2>
+    <p>LinkGuard is open source under the GPLv3 license. You can audit the complete source code at: <a href="https://github.com/aturzone/LinkGuard">github.com/aturzone/LinkGuard</a></p>
+
+    <h2>Changes to This Policy</h2>
+    <p>Any changes to this privacy policy will be reflected in the extension's GitHub repository and updated here.</p>
+
+    <h2>Contact</h2>
+    <p>For questions about this privacy policy, please open an issue on the <a href="https://github.com/aturzone/LinkGuard/issues">GitHub repository</a>.</p>
+</body>
+</html>
