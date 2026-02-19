@@ -1,0 +1,16 @@
+{
+    "brands": [
+        "PayPal", "Google", "Microsoft", "Apple", "Amazon",
+        "Netflix", "Facebook", "Instagram", "WhatsApp", "Twitter",
+        "LinkedIn", "Dropbox", "Adobe", "Spotify", "Zoom",
+        "Slack", "Discord", "Twitch", "Steam", "Epic Games",
+        "Chase", "Wells Fargo", "Bank of America", "Citibank", "HSBC",
+        "Barclays", "Capital One", "American Express", "Visa", "Mastercard",
+        "Coinbase", "Binance", "MetaMask", "OpenSea",
+        "DHL", "FedEx", "UPS", "USPS",
+        "IRS", "HMRC",
+        "DocuSign", "Salesforce", "Office365",
+        "iCloud", "OneDrive", "GitHub", "GitLab",
+        "Bitwarden", "LastPass", "1Password"
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ES2022",
+        "moduleResolution": "node",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "baseUrl": "./src",
+        "paths": {
+            "@engine/*": ["engine/*"],
+            "@services/*": ["services/*"],
+            "@models/*": ["engine/models/*"],
+            "@data/*": ["engine/data/*"]
+        }
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "dist", "test"]
+}

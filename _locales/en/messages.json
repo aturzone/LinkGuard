@@ -1,0 +1,54 @@
+{
+    "extensionName": {
+        "message": "Bitwarden Link Guard",
+        "description": "The name of the extension."
+    },
+    "extensionDescription": {
+        "message": "Offline link safety checker — analyzes URLs for phishing and malicious patterns before navigation.",
+        "description": "The description of the extension."
+    },
+    "safeLabel": {
+        "message": "Safe",
+        "description": "Label for safe URLs."
+    },
+    "warningLabel": {
+        "message": "Warning",
+        "description": "Label for suspicious URLs."
+    },
+    "blockedLabel": {
+        "message": "Blocked",
+        "description": "Label for dangerous URLs."
+    },
+    "proceedAnyway": {
+        "message": "Proceed Anyway",
+        "description": "Button label to bypass a warning."
+    },
+    "goBack": {
+        "message": "Go Back",
+        "description": "Button label to return to safety."
+    },
+    "settingsTitle": {
+        "message": "Settings",
+        "description": "Title for the settings page."
+    },
+    "dashboardTitle": {
+        "message": "Dashboard",
+        "description": "Title for the dashboard page."
+    },
+    "historyTitle": {
+        "message": "History",
+        "description": "Title for the history page."
+    },
+    "configTitle": {
+        "message": "Configuration",
+        "description": "Title for the config page."
+    },
+    "exportConfig": {
+        "message": "Export Config",
+        "description": "Button label for exporting configuration."
+    },
+    "importConfig": {
+        "message": "Import Config",
+        "description": "Button label for importing configuration."
+    }
+}

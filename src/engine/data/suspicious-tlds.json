@@ -1,0 +1,29 @@
+{
+    "tlds": {
+        "tk": 25,
+        "ml": 22,
+        "ga": 22,
+        "cf": 22,
+        "gq": 22,
+        "xyz": 15,
+        "top": 15,
+        "club": 12,
+        "work": 12,
+        "click": 18,
+        "link": 15,
+        "info": 8,
+        "buzz": 15,
+        "surf": 15,
+        "cam": 15,
+        "icu": 18,
+        "monster": 15,
+        "rest": 12,
+        "beauty": 12,
+        "hair": 12,
+        "quest": 12,
+        "sbs": 15,
+        "cfd": 18,
+        "cyou": 15
+    },
+    "trustedTlds": ["gov", "edu", "mil", "int", "ac.uk", "gov.uk", "edu.au", "gov.au"]
+}
