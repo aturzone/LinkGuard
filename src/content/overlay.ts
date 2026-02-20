@@ -1,16 +1,15 @@
 /**
- * Content script: injects a warning overlay into the page when a risky link is clicked.
- * Listens for custom events from link-scanner.ts.
+ * Content script: renders full-page overlay for warnings/blocks.
+ * LinkGuard v2.0 — modern glassmorphism design.
  */
 
-interface OverlayDetail {
+interface OverlayEventDetail {
     score: {
         overallScore: number;
         url: string;
         categories: Array<{
             name: string;
             score: number;
-            weight: number;
             findings: Array<{ rule: string; description: string; severity: string }>;
         }>;
     };
@@ -18,108 +17,164 @@ interface OverlayDetail {
     isBlocked: boolean;
 }
 
-let overlayElement: HTMLElement | null = null;
+let overlayEl: HTMLElement | null = null;
 
-function createOverlay(detail: OverlayDetail): void {
+function createOverlay(detail: OverlayEventDetail): void {
     removeOverlay();
 
     const { score, url, isBlocked } = detail;
+    const color = isBlocked ? "#EF4444" : "#EAB308";
+    const title = isBlocked ? "Link Blocked" : "Proceed with Caution";
+    const subtitle = isBlocked
+        ? "This link scored below the safety threshold and has been blocked."
+        : "This link has a low safety score. Proceed carefully.";
 
-    overlayElement = document.createElement("div");
-    overlayElement.id = "linkguard-overlay";
-    overlayElement.setAttribute("role", "dialog");
-    overlayElement.setAttribute("aria-modal", "true");
-    overlayElement.setAttribute("aria-label", "Link Safety Warning");
+    const shieldSvg = isBlocked
+        ? `<svg viewBox="0 0 512 512" width="56" height="56"><path d="M256 28C256 28 56 100 56 100C56 100 56 300 56 300C56 420 256 492 256 492C256 492 456 420 456 420C456 300 456 100 456 100C456 100 256 28 256 28Z" stroke="${color}" stroke-width="24" fill="${color}" fill-opacity="0.1"/><line x1="180" y1="180" x2="332" y2="332" stroke="${color}" stroke-width="36" stroke-linecap="round"/><line x1="332" y1="180" x2="180" y2="332" stroke="${color}" stroke-width="36" stroke-linecap="round"/></svg>`
+        : `<svg viewBox="0 0 512 512" width="56" height="56"><path d="M256 28C256 28 56 100 56 100C56 100 56 300 56 300C56 420 256 492 256 492C256 492 456 420 456 420C456 300 456 100 456 100C456 100 256 28 256 28Z" stroke="${color}" stroke-width="24" fill="${color}" fill-opacity="0.1"/><line x1="256" y1="160" x2="256" y2="300" stroke="${color}" stroke-width="36" stroke-linecap="round"/><circle cx="256" cy="370" r="18" fill="${color}"/></svg>`;
 
-    const scoreColor = score.overallScore >= 60 ? "#2ecc71" :
-        score.overallScore >= 30 ? "#f39c12" : "#e74c3c";
+    const overlay = document.createElement("div");
+    overlay.id = "linkguard-overlay";
 
-    const statusText = isBlocked ? "BLOCKED" : "WARNING";
-    const statusClass = isBlocked ? "blocked" : "warning";
-
-    let findingsHtml = "";
-    for (const cat of score.categories) {
-        if (cat.findings.length > 0) {
-            findingsHtml += `<div class="lg-category">
-                <div class="lg-cat-header">
-                    <span class="lg-cat-name">${escapeHtml(cat.name)}</span>
-                    <span class="lg-cat-score" style="color:${cat.score >= 60 ? "#2ecc71" : cat.score >= 30 ? "#f39c12" : "#e74c3c"}">${cat.score}/100</span>
-                </div>
-                <ul class="lg-findings">
-                    ${cat.findings.map((f) => `<li class="lg-finding lg-${f.severity}">${escapeHtml(f.description)}</li>`).join("")}
-                </ul>
-            </div>`;
+    const style = document.createElement("style");
+    style.textContent = `
+        #linkguard-overlay {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 2147483647 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: rgba(0,0,0,0.75) !important;
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            animation: lgOverlayIn 200ms ease !important;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif !important;
+            -webkit-font-smoothing: antialiased !important;
         }
-    }
+        @keyframes lgOverlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #linkguard-overlay .lg-ov-card {
+            background: #111827 !important;
+            border: 1px solid #1E293B !important;
+            border-radius: 16px !important;
+            padding: 32px !important;
+            max-width: 440px !important;
+            width: 90% !important;
+            text-align: center !important;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.5) !important;
+            animation: lgCardIn 250ms ease !important;
+        }
+        @keyframes lgCardIn {
+            from { opacity: 0; transform: scale(0.95) translateY(8px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        #linkguard-overlay .lg-ov-shield { margin-bottom: 16px !important; }
+        #linkguard-overlay .lg-ov-title {
+            font-size: 22px !important;
+            font-weight: 800 !important;
+            color: ${color} !important;
+            margin-bottom: 6px !important;
+            letter-spacing: -0.5px !important;
+        }
+        #linkguard-overlay .lg-ov-subtitle {
+            font-size: 13px !important;
+            color: #94A3B8 !important;
+            margin-bottom: 20px !important;
+            line-height: 1.5 !important;
+        }
+        #linkguard-overlay .lg-ov-score-chip {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            background: rgba(0,0,0,0.3) !important;
+            padding: 8px 20px !important;
+            border-radius: 24px !important;
+            margin-bottom: 16px !important;
+            font-size: 20px !important;
+            font-weight: 800 !important;
+            color: ${color} !important;
+        }
+        #linkguard-overlay .lg-ov-url {
+            background: #0B1120 !important;
+            border: 1px solid #1E293B !important;
+            padding: 10px 14px !important;
+            border-radius: 8px !important;
+            font-family: monospace !important;
+            font-size: 12px !important;
+            color: #94A3B8 !important;
+            word-break: break-all !important;
+            text-align: left !important;
+            margin-bottom: 20px !important;
+            max-height: 60px !important;
+            overflow-y: auto !important;
+        }
+        #linkguard-overlay .lg-ov-actions {
+            display: flex !important;
+            gap: 10px !important;
+            justify-content: center !important;
+        }
+        #linkguard-overlay .lg-ov-btn {
+            padding: 10px 24px !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.12s ease !important;
+        }
+        #linkguard-overlay .lg-ov-btn:hover { transform: translateY(-1px) !important; }
+        #linkguard-overlay .lg-ov-btn-safe {
+            background: #22C55E !important;
+            color: #fff !important;
+        }
+        #linkguard-overlay .lg-ov-btn-proceed {
+            background: transparent !important;
+            border: 1px solid #334155 !important;
+            color: #64748B !important;
+        }
+    `;
 
-    overlayElement.innerHTML = `
-        <div class="lg-backdrop"></div>
-        <div class="lg-dialog">
-            <div class="lg-header lg-${statusClass}">
-                <div class="lg-shield">&#x1f6e1;</div>
-                <h2>Link Guard — ${statusText}</h2>
-            </div>
-            <div class="lg-body">
-                <div class="lg-score-ring">
-                    <div class="lg-score-value" style="color:${scoreColor}">${score.overallScore}%</div>
-                    <div class="lg-score-label">Safety Score</div>
-                </div>
-                <div class="lg-url">${escapeHtml(truncateUrl(url, 80))}</div>
-                <div class="lg-details">
-                    ${findingsHtml || '<p class="lg-no-findings">No specific threats detected.</p>'}
-                </div>
-            </div>
-            <div class="lg-actions">
-                <button class="lg-btn lg-btn-back" id="linkguard-go-back">Go Back</button>
-                ${!isBlocked || detail.score.overallScore >= 0 ?
-            `<button class="lg-btn lg-btn-proceed" id="linkguard-proceed">Proceed Anyway</button>` : ""}
+    overlay.appendChild(style);
+    overlay.innerHTML += `
+        <div class="lg-ov-card">
+            <div class="lg-ov-shield">${shieldSvg}</div>
+            <div class="lg-ov-title">${title}</div>
+            <div class="lg-ov-subtitle">${subtitle}</div>
+            <div class="lg-ov-score-chip">${score.overallScore}% Safety</div>
+            <div class="lg-ov-url">${escapeHtml(url)}</div>
+            <div class="lg-ov-actions">
+                <button class="lg-ov-btn lg-ov-btn-safe" id="lg-ov-back">Go Back</button>
+                <button class="lg-ov-btn lg-ov-btn-proceed" id="lg-ov-proceed">Proceed Anyway</button>
             </div>
         </div>
     `;
 
-    // Inject inline styles to avoid CSP issues with external stylesheets
-    const style = document.createElement("style");
-    style.textContent = getOverlayStyles();
-    overlayElement.appendChild(style);
+    document.body.appendChild(overlay);
+    overlayEl = overlay;
 
-    document.body.appendChild(overlayElement);
+    overlay.querySelector("#lg-ov-back")?.addEventListener("click", removeOverlay);
+    overlay.querySelector("#lg-ov-proceed")?.addEventListener("click", () => {
+        removeOverlay();
+        window.location.href = url;
+    });
 
-    // Event listeners
-    const goBackBtn = document.getElementById("linkguard-go-back");
-    if (goBackBtn) {
-        goBackBtn.addEventListener("click", () => removeOverlay());
-    }
-
-    const proceedBtn = document.getElementById("linkguard-proceed");
-    if (proceedBtn) {
-        proceedBtn.addEventListener("click", () => {
-            removeOverlay();
-            window.location.href = url;
-        });
-    }
-
-    // Close on backdrop click
-    const backdrop = overlayElement.querySelector(".lg-backdrop");
-    if (backdrop) {
-        backdrop.addEventListener("click", () => removeOverlay());
-    }
-
-    // Close on Escape
+    // Close on escape
     document.addEventListener("keydown", handleEscape);
 }
 
 function handleEscape(e: KeyboardEvent): void {
-    if (e.key === "Escape") {
-        removeOverlay();
-        document.removeEventListener("keydown", handleEscape);
-    }
+    if (e.key === "Escape") removeOverlay();
 }
 
 function removeOverlay(): void {
-    if (overlayElement && overlayElement.parentNode) {
-        overlayElement.parentNode.removeChild(overlayElement);
-        overlayElement = null;
+    if (overlayEl) {
+        overlayEl.remove();
+        overlayEl = null;
     }
+    document.removeEventListener("keydown", handleEscape);
 }
 
 function escapeHtml(str: string): string {
@@ -128,137 +183,7 @@ function escapeHtml(str: string): string {
     return div.innerHTML;
 }
 
-function truncateUrl(url: string, maxLen: number): string {
-    if (url.length <= maxLen) return url;
-    return url.substring(0, maxLen - 3) + "...";
-}
-
-function getOverlayStyles(): string {
-    return `
-        #linkguard-overlay {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            z-index: 2147483647 !important;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-        }
-        .lg-backdrop {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-        }
-        .lg-dialog {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: #1a1a2e;
-            border-radius: 12px;
-            width: 480px;
-            max-width: 90vw;
-            max-height: 80vh;
-            overflow-y: auto;
-            color: #e0e0e0;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        .lg-header {
-            padding: 20px 24px;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .lg-header.lg-blocked { background: #c0392b; }
-        .lg-header.lg-warning { background: #d68910; }
-        .lg-header h2 {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 600;
-            color: #fff;
-        }
-        .lg-shield { font-size: 28px; }
-        .lg-body { padding: 24px; }
-        .lg-score-ring {
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        .lg-score-value {
-            font-size: 48px;
-            font-weight: 700;
-            line-height: 1;
-        }
-        .lg-score-label {
-            font-size: 14px;
-            color: #888;
-            margin-top: 4px;
-        }
-        .lg-url {
-            background: #16213e;
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 13px;
-            word-break: break-all;
-            color: #7f8fa6;
-            margin-bottom: 16px;
-        }
-        .lg-details { max-height: 200px; overflow-y: auto; }
-        .lg-category { margin-bottom: 12px; }
-        .lg-cat-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .lg-findings {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .lg-finding {
-            font-size: 12px;
-            padding: 4px 8px;
-            margin: 2px 0;
-            border-radius: 4px;
-            border-left: 3px solid;
-        }
-        .lg-critical { border-color: #e74c3c; background: rgba(231,76,60,0.1); }
-        .lg-high { border-color: #e67e22; background: rgba(230,126,34,0.1); }
-        .lg-medium { border-color: #f39c12; background: rgba(243,156,18,0.1); }
-        .lg-low { border-color: #3498db; background: rgba(52,152,219,0.1); }
-        .lg-info { border-color: #2ecc71; background: rgba(46,204,113,0.1); }
-        .lg-actions {
-            padding: 16px 24px;
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            border-top: 1px solid #2a2a4a;
-        }
-        .lg-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .lg-btn:hover { opacity: 0.85; }
-        .lg-btn-back {
-            background: #2ecc71;
-            color: #fff;
-        }
-        .lg-btn-proceed {
-            background: transparent;
-            border: 1px solid #555;
-            color: #888;
-        }
-    `;
-}
-
-// Listen for events from link-scanner.ts
-document.addEventListener("linkguard-show-overlay", ((event: CustomEvent<OverlayDetail>) => {
-    createOverlay(event.detail);
+// Listen for overlay events from link-scanner.ts
+document.addEventListener("linkguard-show-overlay", ((e: CustomEvent<OverlayEventDetail>) => {
+    createOverlay(e.detail);
 }) as EventListener);

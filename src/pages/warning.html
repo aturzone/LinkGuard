@@ -3,66 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Guard — Blocked</title>
+    <title>LinkGuard -- Blocked</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #0f0f23;
-            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+            background: #0B1120;
+            color: #F1F5F9;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-font-smoothing: antialiased;
         }
         .container {
-            max-width: 560px;
+            max-width: 520px;
             width: 90%;
             text-align: center;
         }
-        .shield {
-            font-size: 80px;
-            margin-bottom: 16px;
+        .shield-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
         }
         h1 {
             font-size: 28px;
-            font-weight: 700;
-            color: #e74c3c;
+            font-weight: 800;
+            color: #EF4444;
             margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
         .subtitle {
-            font-size: 16px;
-            color: #888;
+            font-size: 15px;
+            color: #94A3B8;
             margin-bottom: 32px;
+            line-height: 1.5;
         }
-        .score-display {
-            display: inline-block;
-            background: #1a1a2e;
-            border-radius: 12px;
-            padding: 24px 40px;
+        .score-card {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            background: #111827;
+            border: 1px solid #1E293B;
+            border-radius: 16px;
+            padding: 28px 48px;
             margin-bottom: 24px;
         }
-        .score-value {
-            font-size: 64px;
-            font-weight: 700;
-            color: #e74c3c;
-            line-height: 1;
+        .score-ring {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 8px;
+        }
+        .score-ring svg {
+            width: 100px;
+            height: 100px;
+            transform: rotate(-90deg);
+        }
+        .ring-bg {
+            fill: none;
+            stroke: #1E293B;
+            stroke-width: 8;
+        }
+        .ring-fill {
+            fill: none;
+            stroke: #EF4444;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s ease;
+        }
+        .score-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            font-weight: 800;
+            color: #EF4444;
         }
         .score-label {
-            font-size: 14px;
-            color: #888;
-            margin-top: 4px;
+            font-size: 12px;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
-        .url-display {
-            background: #16213e;
+        .url-card {
+            background: #111827;
+            border: 1px solid #1E293B;
             padding: 14px 20px;
-            border-radius: 8px;
-            font-family: monospace;
+            border-radius: 10px;
+            font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, monospace;
             font-size: 13px;
             word-break: break-all;
-            color: #7f8fa6;
+            color: #94A3B8;
             margin-bottom: 32px;
             text-align: left;
+            max-height: 80px;
+            overflow-y: auto;
         }
         .actions {
             display: flex;
@@ -70,53 +113,95 @@
             justify-content: center;
         }
         .btn {
-            padding: 12px 28px;
+            padding: 12px 32px;
             border: none;
-            border-radius: 8px;
-            font-size: 15px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            transition: opacity 0.2s;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn:hover { opacity: 0.85; }
+        .btn:hover { transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
         .btn-back {
-            background: #2ecc71;
+            background: #22C55E;
             color: #fff;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+        .btn-back:hover {
+            background: #16A34A;
+            box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
         }
         .btn-proceed {
             background: transparent;
-            border: 1px solid #555;
-            color: #888;
+            border: 1px solid #334155;
+            color: #64748B;
+        }
+        .btn-proceed:hover {
+            border-color: #475569;
+            color: #94A3B8;
         }
         .btn-proceed.hidden { display: none; }
         .branding {
             margin-top: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             font-size: 12px;
-            color: #555;
+            color: #475569;
+        }
+        .branding svg {
+            width: 20px;
+            height: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="shield">&#x1f6e1;</div>
+        <div class="shield-icon">
+            <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M256 28C256 28 56 100 56 100C56 100 56 300 56 300C56 420 256 492 256 492C256 492 456 420 456 420C456 300 456 100 456 100C456 100 256 28 256 28Z" fill="#EF4444" opacity="0.15"/>
+                <path d="M256 28C256 28 56 100 56 100C56 100 56 300 56 300C56 420 256 492 256 492C256 492 456 420 456 420C456 300 456 100 456 100C456 100 256 28 256 28Z" stroke="#EF4444" stroke-width="24" fill="none"/>
+                <line x1="180" y1="180" x2="332" y2="332" stroke="#EF4444" stroke-width="36" stroke-linecap="round"/>
+                <line x1="332" y1="180" x2="180" y2="332" stroke="#EF4444" stroke-width="36" stroke-linecap="round"/>
+            </svg>
+        </div>
         <h1>Link Blocked</h1>
-        <p class="subtitle">Bitwarden Link Guard detected a potentially dangerous URL</p>
+        <p class="subtitle">LinkGuard detected a potentially dangerous URL.<br>This link scored below the safety threshold.</p>
 
-        <div class="score-display">
-            <div class="score-value" id="score-value">0%</div>
+        <div class="score-card">
+            <div class="score-ring">
+                <svg viewBox="0 0 100 100">
+                    <circle class="ring-bg" cx="50" cy="50" r="42"/>
+                    <circle class="ring-fill" cx="50" cy="50" r="42"
+                        stroke-dasharray="263.9"
+                        stroke-dashoffset="263.9"
+                        id="score-ring-fill"/>
+                </svg>
+                <span class="score-text" id="score-value">0%</span>
+            </div>
             <div class="score-label">Safety Score</div>
         </div>
 
-        <div class="url-display" id="url-display"></div>
+        <div class="url-card" id="url-display"></div>
 
         <div class="actions">
-            <button class="btn btn-back" id="go-back">Go Back to Safety</button>
+            <button class="btn btn-back" id="go-back">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                Go Back to Safety
+            </button>
             <button class="btn btn-proceed hidden" id="proceed">Proceed Anyway</button>
         </div>
 
-        <div class="branding">Bitwarden Link Guard &mdash; Open Source Link Safety</div>
+        <div class="branding">
+            <svg viewBox="0 0 512 512" fill="none"><path d="M256 28C256 28 56 100 56 100C56 100 56 300 56 300C56 420 256 492 256 492C256 492 456 420 456 420C456 300 456 100 456 100C456 100 256 28 256 28Z" fill="#3B82F6"/><path d="M200 260L240 300L320 210" stroke="white" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            LinkGuard &mdash; Open Source Link Safety
+        </div>
     </div>
 
     <script>
@@ -127,6 +212,21 @@
 
         document.getElementById("score-value").textContent = score + "%";
         document.getElementById("url-display").textContent = blockedUrl;
+
+        // Animate score ring
+        const circumference = 2 * Math.PI * 42;
+        const offset = circumference - (score / 100) * circumference;
+        const ringFill = document.getElementById("score-ring-fill");
+        ringFill.style.strokeDasharray = circumference;
+        setTimeout(function() {
+            ringFill.style.strokeDashoffset = offset;
+        }, 100);
+
+        // Color based on score
+        if (score >= 40) {
+            ringFill.style.stroke = "#EAB308";
+            document.getElementById("score-value").style.color = "#EAB308";
+        }
 
         if (bypassAllowed) {
             document.getElementById("proceed").classList.remove("hidden");
