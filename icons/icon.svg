@@ -1,26 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="shield-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    <linearGradient id="gradient" x1="256" y1="64" x2="256" y2="448" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#3B82F6"/>
     </linearGradient>
   </defs>
-  <!-- Shield background - perfectly centered -->
-  <path d="M128 20 L40 50 L40 140 Q40 190 128 230 Q216 190 216 140 L216 50 Z" 
-        fill="url(#shield-gradient)" 
+  
+  <!-- Shield -->
+  <path d="M256 64L96 128V288C96 379.8 162.2 432 256 448C349.8 432 416 379.8 416 288V128L256 64Z" 
+        fill="url(#gradient)" 
         stroke="#1E40AF" 
-        stroke-width="4" 
-        stroke-linejoin="round"/>
-  <!-- Inner highlight -->
-  <path d="M128 35 L55 60 L55 135 Q55 175 128 210 Q201 175 201 135 L201 60 Z" 
-        fill="none" 
-        stroke="rgba(255,255,255,0.25)" 
-        stroke-width="2"/>
-  <!-- Checkmark - perfectly centered and symmetrical -->
-  <path d="M90 125 L115 150 L170 90" 
-        stroke="#FFFFFF" 
-        stroke-width="22" 
+        stroke-width="8"/>
+  
+  <!-- Checkmark -->
+  <path d="M192 256L240 304L336 208" 
+        stroke="white" 
+        stroke-width="32" 
         stroke-linecap="round" 
-        stroke-linejoin="round" 
-        fill="none"/>
+        stroke-linejoin="round"/>
 </svg>
