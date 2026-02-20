@@ -1,27 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
   <defs>
-    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#175ddc;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1244a0;stop-opacity:1" />
+    <linearGradient id="shieldGrad" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
     </linearGradient>
-    <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#27ae60;stop-opacity:1" />
+    <linearGradient id="innerGrad" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
     </linearGradient>
   </defs>
   <!-- Shield body -->
-  <path d="M64 8 L112 28 L112 60 C112 88 92 112 64 120 C36 112 16 88 16 60 L16 28 Z"
-        fill="url(#shieldGrad)" stroke="#0f3d91" stroke-width="2"/>
+  <path d="M256 28L60 120v152c0 118.7 83.6 229.6 196 260 112.4-30.4 196-141.3 196-260V120L256 28z" fill="url(#shieldGrad)"/>
   <!-- Inner shield highlight -->
-  <path d="M64 16 L104 33 L104 60 C104 84 87 105 64 112 C41 105 24 84 24 60 L24 33 Z"
-        fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
-  <!-- Check mark -->
-  <path d="M42 62 L56 76 L86 46"
-        fill="none" stroke="url(#checkGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Link chain icon (small, bottom) -->
-  <circle cx="50" cy="96" r="4" fill="rgba(255,255,255,0.4)"/>
-  <circle cx="64" cy="96" r="4" fill="rgba(255,255,255,0.4)"/>
-  <circle cx="78" cy="96" r="4" fill="rgba(255,255,255,0.4)"/>
-  <line x1="54" y1="96" x2="60" y2="96" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
-  <line x1="68" y1="96" x2="74" y2="96" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+  <path d="M256 60L88 140v132c0 103.2 72.4 199.6 168 228V60z" fill="url(#innerGrad)" opacity="0.15"/>
+  <!-- Checkmark / link icon -->
+  <path d="M200 260c0-30.9 25.1-56 56-56s56 25.1 56 56-25.1 56-56 56-56-25.1-56-56z" fill="none" stroke="#fff" stroke-width="16"/>
+  <!-- Chain link top -->
+  <path d="M236 204v-40c0-22.1 17.9-40 40-40s40 17.9 40 40v40" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+  <!-- Chain link bottom -->
+  <path d="M196 316v40c0 22.1 17.9 40 40 40s40-17.9 40-40v-40" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+  <!-- Guard checkmark -->
+  <path d="M224 258l24 24 40-40" fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
