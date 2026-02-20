@@ -40,7 +40,7 @@ const configService = new ConfigService();
 // ── SVG Icons ──────────────────────────────────────────────────────────────────
 
 const ICONS = {
-    shield: `<svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M256 28C256 28 56 100 56 100C56 100 56 300 56 300C56 420 256 492 256 492C256 492 456 420 456 420C456 300 456 100 456 100C456 100 256 28 256 28Z" fill="#3B82F6"/><path d="M200 260L240 300L320 210" stroke="white" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    shield: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#60A5FA"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient></defs><path d="M12 2L4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z" fill="url(#sg)" stroke="#1E40AF" stroke-width="1.5"/><path d="M9 12l2 2 4-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     domain: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
     url: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
     lock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
@@ -95,7 +95,7 @@ function renderApp(): void {
     app.innerHTML = `
         <div class="popup-header">
             <div class="header-left">
-                <div class="logo-icon">${ICONS.shield}</div>
+                <img src="../icons/icon-48.png" class="logo-icon" alt="LinkGuard" />
                 <div class="logo-text">
                     <span class="brand-name">LinkGuard</span>
                     <span class="brand-sub">Link Safety</span>
@@ -491,6 +491,9 @@ function renderSettings(): void {
         showToast("Settings saved");
     });
 }
+
+// Rest of the code remains the same...
+// (Config, History sections continue unchanged)
 
 // ── Config (Full Management) ───────────────────────────────────────────────────
 
