@@ -1,10 +1,10 @@
 {
     "extensionName": {
-        "message": "Bitwarden Link Guard",
+        "message": "LinkGuard",
         "description": "The name of the extension."
     },
     "extensionDescription": {
-        "message": "Offline link safety checker — analyzes URLs for phishing and malicious patterns before navigation.",
+        "message": "Offline link safety checker — analyzes URLs for phishing and malicious patterns before navigation. Fast, private, no data leaves your browser.",
         "description": "The description of the extension."
     },
     "safeLabel": {
@@ -12,7 +12,7 @@
         "description": "Label for safe URLs."
     },
     "warningLabel": {
-        "message": "Warning",
+        "message": "Caution",
         "description": "Label for suspicious URLs."
     },
     "blockedLabel": {
@@ -24,7 +24,7 @@
         "description": "Button label to bypass a warning."
     },
     "goBack": {
-        "message": "Go Back",
+        "message": "Go Back to Safety",
         "description": "Button label to return to safety."
     },
     "settingsTitle": {
@@ -50,5 +50,13 @@
     "importConfig": {
         "message": "Import Config",
         "description": "Button label for importing configuration."
+    },
+    "quickScan": {
+        "message": "Quick Scan",
+        "description": "Button label for quick URL scanning."
+    },
+    "resetDefaults": {
+        "message": "Reset to Defaults",
+        "description": "Button label for resetting configuration."
     }
 }

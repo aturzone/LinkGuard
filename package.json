@@ -1,7 +1,7 @@
 {
-    "name": "bitwarden-link-guard",
-    "version": "1.0.0",
-    "description": "Offline link safety checker for the Bitwarden ecosystem — checks link safety before navigation using heuristics only.",
+    "name": "linkguard",
+    "version": "2.0.0",
+    "description": "Offline link safety checker — analyzes URLs for phishing and malicious patterns before navigation. Fast, private, open source.",
     "author": "kifpool.me SecOps",
     "license": "GPL-3.0",
     "scripts": {
@@ -16,10 +16,10 @@
         "lint": "eslint src/ --ext .ts"
     },
     "devDependencies": {
+        "@angular/common": "^17.3.0",
         "@angular/compiler": "^17.3.0",
         "@angular/compiler-cli": "^17.3.0",
         "@angular/core": "^17.3.0",
-        "@angular/common": "^17.3.0",
         "@angular/forms": "^17.3.0",
         "@angular/platform-browser": "^17.3.0",
         "@angular/platform-browser-dynamic": "^17.3.0",
@@ -41,5 +41,8 @@
         "webpack": "^5.91.0",
         "webpack-cli": "^5.1.4",
         "zone.js": "^0.14.4"
+    },
+    "dependencies": {
+        "sharp": "^0.34.5"
     }
 }
